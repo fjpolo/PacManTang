@@ -7,7 +7,7 @@
 //Device Version: A
 //Created Time: Sun Mar 31 00:24:37 2024
 
-module gowin_pll_pacman (clkout0, clkout1, clkout2, clkin);
+module gowin_pll_os (clkout0, clkout1, clkout2, clkin);
 
 output clkout0;
 output clkout1;

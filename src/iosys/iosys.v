@@ -34,7 +34,7 @@ module iosys #(
     `include "wishbone_slaves.vh",
     parameter FREQ=21_477_000,
     parameter [14:0] COLOR_LOGO=15'b00000_10101_00000,
-    parameter [15:0] CORE_ID=1      // 1: pacmantang, 2: spacmantang
+    parameter [15:0] CORE_ID=0      // 0: pacmantang, 1: nestang, 2: spacmantang
 )
 (
     input clk,                      // SNES mclk
