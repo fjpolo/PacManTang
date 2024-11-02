@@ -134,6 +134,25 @@ wire [7:0]NES_gamepad_button_state2;
 wire NES_gamepad_data_available2;
 
 ///////////////////////////
+// PACMAN_WRAPPER
+//////////////////////////
+wire    [0:0]   pacman_enable = joy1_btns[2] & joy1_btns[5]; 
+wire    [0:0]   pacman_tmds_clk_n;
+wire    [0:0]   pacman_tmds_clk_p;
+wire    [2:0]   pacman_tmds_d_n;
+wire    [2:0]   pacman_tmds_d_p;
+pacman_wrapper pacman_inst(
+    .clk(sys_clk),
+    .i_reset(~sys_resetn),
+    .i_ce(pacman_enable),
+    .i_nes_btn(joy1_btns),
+    .tmds_clk_n(pacman_tmds_clk_n),
+    .tmds_clk_p(pacman_tmds_clk_p),
+    .tmds_d_n(pacman_tmds_d_n),
+    .tmds_d_p(pacman_tmds_d_p)
+);
+
+///////////////////////////
 // Clocks
 ///////////////////////////
 
@@ -187,24 +206,29 @@ assign fclk = sys_clk;
 
 wire [31:0] status;
 
-// From sdram_nes.v or sdram_sim.v
+// From sdram_pacman.v
 wire rv_address_is_wram = (rv_addr >= 'h66000)&&(rv_addr <= 'h68000);
 wire rv_address_is_wram_66000 = rv_addr == 'h66000;
-sdram_nes sdram (
+sdram_pacman sdram (
     .clk(fclk), .clkref(clkref), .resetn(sys_resetn), .busy(sdram_busy),
 
     .SDRAM_DQ(IO_sdram_dq), .SDRAM_A(O_sdram_addr), .SDRAM_BA(O_sdram_ba), 
     .SDRAM_nCS(O_sdram_cs_n), .SDRAM_nWE(O_sdram_wen_n), .SDRAM_nRAS(O_sdram_ras_n), 
     .SDRAM_nCAS(O_sdram_cas_n), .SDRAM_CKE(O_sdram_cke), .SDRAM_DQM(O_sdram_dqm), 
 
-    // PPU
-    .addrA(memory_addr_ppu), .weA(memory_write_ppu), .dinA(memory_dout_ppu),
-    .oeA(memory_read_ppu), .doutA(memory_din_ppu),
+    // Free
+    .addrA(), 
+    .weA(), 
+    .dinA(),
+    .oeA(), 
+    .doutA(),
 
-    // CPU
-    .addrB(loading ? loader_addr_mem : memory_addr_cpu), .weB(loader_write_mem || memory_write_cpu),
-    .dinB(loading ? loader_write_data_mem : memory_dout_cpu),
-    .oeB(~loading & memory_read_cpu), .doutB(memory_din_cpu),
+    // PacMan
+    .addrB(memory_addr_cpu),
+    .weB(memory_write_cpu),
+    .dinB(memory_dout_cpu),
+    .oeB(memory_read_cpu),
+    .doutB(memory_din_cpu),
 
     // IOSys risc-v softcore
     .rv_addr({rv_addr[20:2], rv_word}), 
@@ -237,17 +261,35 @@ wire [9:0]  overlay_y;
 wire [15:0] overlay_color;      // BGR5
 
 // HDMI output
+wire    [0:0]   overlay_tmds_clk_n;
+wire    [0:0]   overlay_tmds_clk_p;
+wire    [2:0]   overlay_tmds_d_n;
+wire    [2:0]   overlay_tmds_d_p;
 nes2hdmi u_hdmi (     // purple: RGB=440064 (010001000_00000000_01100100), BGR5=01100_00000_01000
-    .clk(clk), .resetn(sys_resetn),
-    .color(color), .cycle(cycle), 
-    .scanline(scanline), .sample(sample >> 1),
+    .clk(clk),
+    .resetn(sys_resetn),
+    .color(color), 
+    .cycle(cycle), 
+    .scanline(scanline),
+    .sample(sample >> 1),
     .i_reg_aspect_ratio(NES_aspect_ratio),
-    .overlay(overlay), .overlay_x(overlay_x), .overlay_y(overlay_y),
+    .overlay(overlay),
+    .overlay_x(overlay_x),
+    .overlay_y(overlay_y),
     .overlay_color(overlay_color),
-    .clk_pixel(hclk), .clk_5x_pixel(hclk5),
-    .tmds_clk_n(tmds_clk_n), .tmds_clk_p(tmds_clk_p),
-    .tmds_d_n(tmds_d_n), .tmds_d_p(tmds_d_p)
+    .clk_pixel(hclk),
+    .clk_5x_pixel(hclk5),
+    .tmds_clk_n(overlay_tmds_clk_n),
+    .tmds_clk_p(overlay_tmds_clk_p),
+    .tmds_d_n(overlay_tmds_d_n),
+    .tmds_d_p(overlay_tmds_d_p)
 );
+
+assign tmds_clk_n   = pacman_enable ? pacman_tmds_clk_n : overlay_tmds_clk_n;
+assign tmds_clk_p   = pacman_enable ? pacman_tmds_clk_p : overlay_tmds_clk_p;
+assign tmds_d_n     = pacman_enable ? pacman_tmds_d_n : overlay_tmds_d_n;
+assign tmds_d_p     = pacman_enable ? pacman_tmds_d_p : overlay_tmds_d_p;
+
 
 // IOSys for menu, rom loading...
 localparam RV_IDLE_REQ0 = 3'd0;

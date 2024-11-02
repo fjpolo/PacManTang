@@ -5,21 +5,36 @@
     <Version>5</Version>
     <Device name="GW2AR-18C" pn="GW2AR-LV18QN88C8/I7">gw2ar18c-000</Device>
     <FileList>
+        <File path="src/Pacman/src/gowin_clkdiv/gowin_clkdiv.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/gowin_dpb/ram.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/gowin_rpll_20k/pll_174m_20k.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/gowin_rpll_20k/pll_240m_20k.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/audio_clock_regeneration_packet.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/audio_info_frame.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/audio_sample_packet.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/auxiliary_video_information_info_frame.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/hdmi.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/packet_assembler.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/packet_picker.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/serializer.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/source_product_description_info_frame.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/hdmi/tmds_channel.sv" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/82s123_7f.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/82s126_1m.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/82s126_3m.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/82s126_4a.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/pacman_5e.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/pacman_5f.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/pacman_6e.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/pacman_6f.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/pacman_6h.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/roms/pacman_6j.v" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/video.v" type="file.verilog" enable="1"/>
         <File path="src/compat.v" type="file.verilog" enable="1"/>
         <File path="src/controller_ds2.sv" type="file.verilog" enable="1"/>
         <File path="src/controller_snes.v" type="file.verilog" enable="1"/>
         <File path="src/dpram.v" type="file.verilog" enable="1"/>
         <File path="src/dualshock_controller.v" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/audio_clock_regeneration_packet.sv" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/audio_info_frame.sv" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/audio_sample_packet.sv" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/auxiliary_video_information_info_frame.sv" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/hdmi.sv" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/packet_assembler.sv" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/packet_picker.sv" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/serializer.sv" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/source_product_description_info_frame.sv" type="file.verilog" enable="1"/>
-        <File path="src/hdmi2/tmds_channel.sv" type="file.verilog" enable="1"/>
         <File path="src/hw_uart.v" type="file.verilog" enable="1"/>
         <File path="src/iosys/gowin_dpb_menu.v" type="file.verilog" enable="1"/>
         <File path="src/iosys/iosys.v" type="file.verilog" enable="1"/>
@@ -34,14 +49,44 @@
         <File path="src/nano20k/gowin_pll_pacman.v" type="file.verilog" enable="1"/>
         <File path="src/nano20k/gowin_pll_usb.v" type="file.verilog" enable="1"/>
         <File path="src/nes2hdmi.sv" type="file.verilog" enable="1"/>
+        <File path="src/pacman_wrapper.sv" type="file.verilog" enable="1"/>
         <File path="src/pacmantang_top.sv" type="file.verilog" enable="1"/>
-        <File path="src/sdram_nes.v" type="file.verilog" enable="1"/>
+        <File path="src/sdram_pacman.v" type="file.verilog" enable="1"/>
         <File path="src/uart_tx_V2.v" type="file.verilog" enable="1"/>
         <File path="src/usb_hid_host.v" type="file.verilog" enable="1"/>
         <File path="src/usb_hid_host_rom.v" type="file.verilog" enable="1"/>
         <File path="src/wishbone_slaves.vh" type="file.verilog" enable="1"/>
+        <File path="src/Pacman/src/T80/T80.vhd" type="file.vhdl" enable="1"/>
+        <File path="src/Pacman/src/T80/T80_ALU.vhd" type="file.vhdl" enable="1"/>
+        <File path="src/Pacman/src/T80/T80_MCode.vhd" type="file.vhdl" enable="1"/>
+        <File path="src/Pacman/src/T80/T80_Pack.vhd" type="file.vhdl" enable="1"/>
+        <File path="src/Pacman/src/T80/T80_Reg.vhd" type="file.vhdl" enable="1"/>
+        <File path="src/Pacman/src/T80/T80sed.vhd" type="file.vhdl" enable="1"/>
         <File path="src/nano20k/pacmantang.cst" type="file.cst" enable="1"/>
         <File path="src/nano20k/pacmantang.sdc" type="file.sdc" enable="1"/>
+        <File path="src/Pacman/src/gowin_clkdiv/gowin_clkdiv.ipc" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/gowin_clkdiv/gowin_clkdiv.mod" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/gowin_dpb/ram.ipc" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/gowin_dpb/ram.mod" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/gowin_rpll/pll_174m.ipc" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/gowin_rpll/pll_174m.mod" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/gowin_rpll/pll_240m.ipc" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/gowin_rpll/pll_240m.mod" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/gowin_rpll_20k/pll_174m_20k.ipc" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/gowin_rpll_20k/pll_240m_20k.ipc" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/.gitignore" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/82s123.7f" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/82s126.1m" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/82s126.3m" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/82s126.4a" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/bin2v.py" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/conv.sh" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/pacman.5e" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/pacman.5f" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/pacman.6e" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/pacman.6f" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/pacman.6h" type="file.other" enable="0"/>
+        <File path="src/Pacman/src/roms/pacman.6j" type="file.other" enable="0"/>
         <File path="src/nano20k/gowin_pll_pacman.ipc" type="file.other" enable="0"/>
         <File path="src/nano20k/gowin_pll_pacman.mod" type="file.other" enable="0"/>
     </FileList>

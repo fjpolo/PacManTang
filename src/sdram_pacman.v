@@ -16,7 +16,7 @@
 
 import configPackage::*;
 
-module sdram_nes #(
+module sdram_pacman #(
     // Clock frequency, max 66.7Mhz with current set of T_xx/CAS parameters.
     parameter         FREQ = 64_800_000,
 

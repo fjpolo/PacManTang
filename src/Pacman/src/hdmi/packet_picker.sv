@@ -48,15 +48,7 @@ assign subs[0][3] = 56'dX;
 
 // Audio Clock Regeneration Packet
 logic clk_audio_counter_wrap;
-audio_clock_regeneration_packet #(
-    .VIDEO_RATE(VIDEO_RATE), 
-    .AUDIO_RATE(AUDIO_RATE)
-    ) audio_clock_regeneration_packet (
-        .clk_pixel(clk_pixel), 
-        .clk_audio(clk_audio), 
-        .clk_audio_counter_wrap(clk_audio_counter_wrap), 
-        .header(headers[1]), .sub(subs[1])
-    );
+audio_clock_regeneration_packet #(.VIDEO_RATE(VIDEO_RATE), .AUDIO_RATE(AUDIO_RATE)) audio_clock_regeneration_packet (.clk_pixel(clk_pixel), .clk_audio(clk_audio), .clk_audio_counter_wrap(clk_audio_counter_wrap), .header(headers[1]), .sub(subs[1]));
 
 // Audio Sample packet
 localparam bit [3:0] SAMPLING_FREQUENCY = AUDIO_RATE == 32000 ? 4'b0011
@@ -73,14 +65,10 @@ localparam bit WORD_LENGTH_LIMIT = AUDIO_BIT_WIDTH <= 20 ? 1'b0 : 1'b1;
 
 logic [AUDIO_BIT_WIDTH-1:0] audio_sample_word_transfer [1:0];
 logic audio_sample_word_transfer_control = 1'd0;
-logic clk_audio_old;
-always_ff @(posedge clk_pixel)
+always_ff @(posedge clk_audio)
 begin
-    clk_audio_old <= clk_audio;
-    if (clk_audio & ~clk_audio_old) begin
-        audio_sample_word_transfer <= audio_sample_word;
-        audio_sample_word_transfer_control <= !audio_sample_word_transfer_control;
-    end
+    audio_sample_word_transfer <= audio_sample_word;
+    audio_sample_word_transfer_control <= !audio_sample_word_transfer_control;
 end
 
 logic [1:0] audio_sample_word_transfer_control_synchronizer_chain = 2'd0;
