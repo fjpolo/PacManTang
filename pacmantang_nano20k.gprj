@@ -31,7 +31,7 @@
         <File path="src/iosys/textdisp.v" type="file.verilog" enable="1"/>
         <File path="src/nano20k/config.v" type="file.verilog" enable="1"/>
         <File path="src/nano20k/gowin_pll_hdmi.v" type="file.verilog" enable="1"/>
-        <File path="src/nano20k/gowin_pll_os.v" type="file.verilog" enable="1"/>
+        <File path="src/nano20k/gowin_pll_pacman.v" type="file.verilog" enable="1"/>
         <File path="src/nano20k/gowin_pll_usb.v" type="file.verilog" enable="1"/>
         <File path="src/nes2hdmi.sv" type="file.verilog" enable="1"/>
         <File path="src/pacmantang_top.sv" type="file.verilog" enable="1"/>
@@ -42,7 +42,7 @@
         <File path="src/wishbone_slaves.vh" type="file.verilog" enable="1"/>
         <File path="src/nano20k/pacmantang.cst" type="file.cst" enable="1"/>
         <File path="src/nano20k/pacmantang.sdc" type="file.sdc" enable="1"/>
-        <File path="src/nano20k/gowin_pll_os.ipc" type="file.other" enable="0"/>
-        <File path="src/nano20k/gowin_pll_os.mod" type="file.other" enable="0"/>
+        <File path="src/nano20k/gowin_pll_pacman.ipc" type="file.other" enable="0"/>
+        <File path="src/nano20k/gowin_pll_pacman.mod" type="file.other" enable="0"/>
     </FileList>
 </Project>

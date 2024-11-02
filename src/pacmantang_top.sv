@@ -158,11 +158,11 @@ end
 `ifdef PRIMER
 // sysclk 50Mhz
 gowin_pll_27 pll_27 (.clkin(sys_clk), .clkout0(clk27));      // Primer25K: PLL to generate 27Mhz from 50Mhz
-gowin_pll_os pll_os (.clkin(sys_clk), .clkout0(clk), .clkout1(fclk), .clkout2(O_sdram_clk));
+gowin_pll_pacman pll_pacman (.clkin(sys_clk), .clkout0(clk), .clkout1(fclk), .clkout2(O_sdram_clk));
 `else
 // sys_clk 27Mhz
 assign clk27 = sys_clk;       // Nano20K: native 27Mhz system clock
-gowin_pll_os pll_os(.clkin(sys_clk), .clkoutd3(clk), .clkout(fclk), .clkoutp(O_sdram_clk));
+gowin_pll_pacman pll_pacman(.clkin(sys_clk), .clkoutd3(clk), .clkout(fclk), .clkoutp(O_sdram_clk));
 `endif  // PRIMER
 
 gowin_pll_hdmi pll_hdmi (
@@ -332,8 +332,8 @@ always @(posedge clk) begin            // RV
     end
 end
 
-localparam CORE_ID_OS = 0;
-iosys #(.COLOR_LOGO(15'b01100_00000_01000), .CORE_ID(CORE_ID_OS) )     // purple pacmantang logo
+localparam CORE_ID_PACMAN = 4;
+iosys #(.COLOR_LOGO(15'b01100_00000_01000), .CORE_ID(CORE_ID_PACMAN) )     // purple pacmantang logo
     iosys (
     .clk(clk), .hclk(hclk), .resetn(sys_resetn),
 
