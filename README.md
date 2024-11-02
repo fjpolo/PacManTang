@@ -57,7 +57,7 @@ in the [src/roms](src/roms) directory and then run the
 
 ## Getting the parts
 
-You need either the Sipeed Tang Primer 25K or Tang Nano 20K FPGA board to run the latest NESTang.
+You need either the Sipeed Tang Primer 25K or Tang Nano 20K FPGA board to run the latest pacmantang.
 
 * If you choose the Primer 25K, get the [main Primer 25K dock board](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html), [DVI PMod](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DVI), [TF Card PMod](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_TF-CARD), [DS2x2 PMod](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DS2x2) and a [Tang SDRAM](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#TANG-40P-MODULE).
 * For the Tang Nano 20K, we suggest the [Tang Nano 20K Retro Gaming Kit](https://www.amazon.com/GW2AR-18-Computer-Debugger-Multiple-Emulator/dp/B0C5XLBQ6C), as it contains the necessary controllers and adapters.
@@ -80,15 +80,15 @@ Sofar there's support for DualShock2, SNES and NES gamepads.
 
 ## Development
 
-If you want to generate the bitstream from source, see [Build Instructions](https://nand2mario.github.io/nestang-doc/dev/build_bitstream/). Make sure you use the Gowin IDE version 1.9.9 commercial (requires a free license).
+If you want to generate the bitstream from source, see [Build Instructions](https://nand2mario.github.io/pacmantang-doc/dev/build_bitstream/). Make sure you use the Gowin IDE version 1.9.9 commercial (requires a free license).
 
-[Usb_hid_host](https://github.com/nand2mario/usb_hid_host) was development so NESTang could support USB gamepads. Follow the link if you want to use it for your FPGA projects. It supports keyboards and mice too.
+[Usb_hid_host](https://github.com/nand2mario/usb_hid_host) was development so pacmantang could support USB gamepads. Follow the link if you want to use it for your FPGA projects. It supports keyboards and mice too.
 
 
 ## Special Thanks
 
 * [Pacman-TangNano9k](https://github.com/harbaum/Pacman-TangNano9k)
-* [nestang](https://github.com/nand2mario/nestang)
+* [pacmantang](https://github.com/nand2mario/pacmantang)
 
 fjpolo (`fjpolo at gmail.com`)
 
