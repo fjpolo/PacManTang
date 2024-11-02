@@ -8,7 +8,6 @@
         <File path="src/Pacman/src/gowin_clkdiv/gowin_clkdiv.v" type="file.verilog" enable="1"/>
         <File path="src/Pacman/src/gowin_dpb/ram.v" type="file.verilog" enable="1"/>
         <File path="src/Pacman/src/gowin_rpll_20k/pll_174m_20k.v" type="file.verilog" enable="1"/>
-        <File path="src/Pacman/src/gowin_rpll_20k/pll_240m_20k.v" type="file.verilog" enable="1"/>
         <File path="src/Pacman/src/hdmi/audio_clock_regeneration_packet.sv" type="file.verilog" enable="1"/>
         <File path="src/Pacman/src/hdmi/audio_info_frame.sv" type="file.verilog" enable="1"/>
         <File path="src/Pacman/src/hdmi/audio_sample_packet.sv" type="file.verilog" enable="1"/>

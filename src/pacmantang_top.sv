@@ -71,14 +71,6 @@ module pacmantang_top (
     output ds_cs2,
 `endif
 
-    // USB
-//     inout usbdm,
-//     inout usbdp,
-// `ifndef PRIMER
-//     inout usbdm2,
-//     inout usbdp2,
-// `endif
-
     // HDMI TX
     output       tmds_clk_n,
     output       tmds_clk_p,
@@ -137,19 +129,19 @@ wire NES_gamepad_data_available2;
 // PACMAN_WRAPPER
 //////////////////////////
 wire    [0:0]   pacman_enable = joy1_btns[2] & joy1_btns[5]; 
-wire    [0:0]   pacman_tmds_clk_n;
-wire    [0:0]   pacman_tmds_clk_p;
-wire    [2:0]   pacman_tmds_d_n;
-wire    [2:0]   pacman_tmds_d_p;
 pacman_wrapper pacman_inst(
     .clk(sys_clk),
     .i_reset(~sys_resetn),
     .i_ce(pacman_enable),
     .i_nes_btn(joy1_btns),
-    .tmds_clk_n(pacman_tmds_clk_n),
-    .tmds_clk_p(pacman_tmds_clk_p),
-    .tmds_d_n(pacman_tmds_d_n),
-    .tmds_d_p(pacman_tmds_d_p)
+    .tmds_clk_n(tmds_clk_n),
+    .tmds_clk_p(tmds_clk_p),
+    .tmds_d_n(tmds_d_n),
+    .tmds_d_p(tmds_d_p),
+    .overlay(overlay),
+    .overlay_x(overlay_x),
+    .overlay_y(overlay_y),
+    .overlay_color(overlay_color)
 );
 
 ///////////////////////////
@@ -173,28 +165,9 @@ always @(posedge clk) begin
 end
 
 `ifndef VERILATOR
-
-`ifdef PRIMER
-// sysclk 50Mhz
-gowin_pll_27 pll_27 (.clkin(sys_clk), .clkout0(clk27));      // Primer25K: PLL to generate 27Mhz from 50Mhz
-gowin_pll_pacman pll_pacman (.clkin(sys_clk), .clkout0(clk), .clkout1(fclk), .clkout2(O_sdram_clk));
-`else
 // sys_clk 27Mhz
 assign clk27 = sys_clk;       // Nano20K: native 27Mhz system clock
 gowin_pll_pacman pll_pacman(.clkin(sys_clk), .clkoutd3(clk), .clkout(fclk), .clkoutp(O_sdram_clk));
-`endif  // PRIMER
-
-gowin_pll_hdmi pll_hdmi (
-    .clkin(clk27),
-    .clkout(hclk5)
-);
-
-CLKDIV #(.DIV_MODE(5)) div5 (
-    .CLKOUT(hclk),
-    .HCLKIN(hclk5),
-    .RESETN(sys_resetn),
-    .CALIB(1'b0)
-);
 
 `else   // verilator
 
@@ -259,37 +232,6 @@ wire overlay;                   // iosys controls overlay
 wire [10:0] overlay_x;
 wire [9:0]  overlay_y;
 wire [15:0] overlay_color;      // BGR5
-
-// HDMI output
-wire    [0:0]   overlay_tmds_clk_n;
-wire    [0:0]   overlay_tmds_clk_p;
-wire    [2:0]   overlay_tmds_d_n;
-wire    [2:0]   overlay_tmds_d_p;
-nes2hdmi u_hdmi (     // purple: RGB=440064 (010001000_00000000_01100100), BGR5=01100_00000_01000
-    .clk(clk),
-    .resetn(sys_resetn),
-    .color(color), 
-    .cycle(cycle), 
-    .scanline(scanline),
-    .sample(sample >> 1),
-    .i_reg_aspect_ratio(NES_aspect_ratio),
-    .overlay(overlay),
-    .overlay_x(overlay_x),
-    .overlay_y(overlay_y),
-    .overlay_color(overlay_color),
-    .clk_pixel(hclk),
-    .clk_5x_pixel(hclk5),
-    .tmds_clk_n(overlay_tmds_clk_n),
-    .tmds_clk_p(overlay_tmds_clk_p),
-    .tmds_d_n(overlay_tmds_d_n),
-    .tmds_d_p(overlay_tmds_d_p)
-);
-
-assign tmds_clk_n   = pacman_enable ? pacman_tmds_clk_n : overlay_tmds_clk_n;
-assign tmds_clk_p   = pacman_enable ? pacman_tmds_clk_p : overlay_tmds_clk_p;
-assign tmds_d_n     = pacman_enable ? pacman_tmds_d_n : overlay_tmds_d_n;
-assign tmds_d_p     = pacman_enable ? pacman_tmds_d_p : overlay_tmds_d_p;
-
 
 // IOSys for menu, rom loading...
 localparam RV_IDLE_REQ0 = 3'd0;
@@ -468,35 +410,6 @@ always @(posedge clk) begin
 end
 assign joypad1_data[0] = joypad_bits[0];
 assign joypad2_data[0] = joypad_bits2[0];
-
-//   usb_btn:      (R L D U START SELECT B A)
-// wire [1:0] usb_type, usb_type2;
-// wire usb_report, usb_report2;
-// usb_hid_host usb_controller (
-//     .usbclk(clk_usb), .usbrst_n(sys_resetn),
-//     .usb_dm(usbdm), .usb_dp(usbdp),	.typ(usb_type), .report(usb_report), 
-//     .game_l(usb_btn[6]), .game_r(usb_btn[7]), .game_u(usb_btn[4]), .game_d(usb_btn[5]), 
-//     .game_a(usb_btn[0]), .game_b(usb_btn[1]), .game_x(usb_btn_x), .game_y(usb_btn_y), 
-//     .game_sel(usb_btn[2]), .game_sta(usb_btn[3]),
-//     // ignore keyboard and mouse input
-//     .key_modifiers(), .key1(), .key2(), .key3(), .key4(),
-//     .mouse_btn(), .mouse_dx(), .mouse_dy(),
-//     .dbg_hid_report()
-// );
-
-// `ifndef PRIMER
-// usb_hid_host usb_controller2 (
-//     .usbclk(clk_usb), .usbrst_n(sys_resetn),
-//     .usb_dm(usbdm2), .usb_dp(usbdp2),	.typ(usb_type2), .report(usb_report2), 
-//     .game_l(usb_btn2[6]), .game_r(usb_btn2[7]), .game_u(usb_btn2[4]), .game_d(usb_btn2[5]), 
-//     .game_a(usb_btn2[0]), .game_b(usb_btn2[1]), .game_x(usb_btn_x2), .game_y(usb_btn_y2), 
-//     .game_sel(usb_btn2[2]), .game_sta(usb_btn2[3]),
-//     // ignore keyboard and mouse input
-//     .key_modifiers(), .key1(), .key2(), .key3(), .key4(),
-//     .mouse_btn(), .mouse_dx(), .mouse_dy(),
-//     .dbg_hid_report()
-// );
-// `endif
 
 `endif
 

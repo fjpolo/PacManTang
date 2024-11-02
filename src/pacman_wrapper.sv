@@ -8,19 +8,31 @@ module pacman_wrapper(
     output  wire    [0:0]   tmds_clk_n,
     output  wire    [0:0]   tmds_clk_p,
     output  wire    [2:0]   tmds_d_n,
-    output  wire    [2:0]   tmds_d_p
+    output  wire    [2:0]   tmds_d_p,
+    // overlay interface
+    input overlay,
+    output [10:0] overlay_x,
+    output [9:0] overlay_y,
+    input [15:0] overlay_color // BGR5, [15] is opacity
 );
 
-`ifdef WIDE
-// 1024x576p@60hz: 240.7 MHz HDMI clock
-// actual hdmi clock = 239.14 MHz
-// actual pixel clock = 47.828 MHz
-// 47828000 / 48000 / 2 - 1 = 497
-`define PLL pll_240m 
-`define AUDIO_DIVISOR 9'd497
-`define VIDEO_WIDE 1
-`define PIXEL_CLOCK 47828000
-`else
+assign overlay_x = cx;
+assign overlay_y = cy;
+reg overlay_active;
+always_ff @(posedge clk_pixel) begin
+    if (cx == 11'd256 && cy >= 10'd24 && cy < 10'd696)
+        overlay_active <= 1;
+    if (cx == 11'd1023)
+        overlay_active <= 0;
+
+if (overlay) begin      // transparency effect for overlay
+        rgb <= {2'b0, rgb_pacman[23:18], 2'b0, rgb_pacman[15:10], 2'b0, rgb_pacman[7:2]};  
+        if (overlay_active && overlay_color[15])  // overlay_color is BGR5
+            rgb <= {overlay_color[4:0], 3'b0, overlay_color[9:5], 3'b0, overlay_color[14:10], 3'b0};
+    end else
+        rgb <= rgb_pacman;     // normal NES display
+end
+
 // 768x576p@60hz:  174.8 MHz HDMI clock, actual pixel clock = 34.8 MHz
 // actual hdmi clock = 174 MHz
 // actual pixel clock = 34.8 MHz
@@ -29,7 +41,6 @@ module pacman_wrapper(
 `define AUDIO_DIVISOR 9'd361
 `define VIDEO_WIDE 0
 `define PIXEL_CLOCK  34800000
-`endif
 
 wire i_reset;
 assign resetn = ~i_reset;
@@ -77,6 +88,8 @@ ELVDS_OBUF tmds_bufds [3:0] (
 );
 
 logic [23:0] rgb;                // rgb color signal
+logic [23:0] rgb_overlay;        // rgb_overlay color signal
+logic [23:0] rgb_pacman;         // rgb_pacman color signal
 logic [10:0] cx;                 // horizontal pixel counter
 logic [9:0]  cy;                 // vertical pixel counter
 reg [9:0] audio_out_register;    // register holding the single pacman audio channel
@@ -385,9 +398,9 @@ video #(.VIDEO_WIDE(`VIDEO_WIDE)) video_inst (
     .vbi(vbi),
 
     // output rgb data
-    .r(rgb[23:16]),
-    .g(rgb[15:8]),
-    .b(rgb[7:0]),
+    .r(rgb_pacman[23:16]),
+    .g(rgb_pacman[15:8]),
+    .b(rgb_pacman[7:0]),
 
     // input video counters
     .x(cx),
